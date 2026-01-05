@@ -4,37 +4,47 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Horloge</title>
+
   <style>
-    :root { color-scheme: light dark; }
+    :root {
+      color-scheme: light dark;
+    }
+
     body {
       margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      height: 100vh;
       display: grid;
       place-items: center;
-      height: 100vh;
       background: transparent;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
     }
-    .card {
-      padding: 18px 22px;
-      border-radius: 16px;
-      border: 1px solid rgba(120,120,120,.25);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      min-width: 220px;
+
+    .clock {
       text-align: center;
     }
-    .time { font-size: 34px; font-weight: 700; letter-spacing: 0.5px; }
-    .date { margin-top: 6px; font-size: 14px; opacity: .8; }
+
+    .time {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .date {
+      margin-top: 6px;
+      font-size: 14px;
+      opacity: 0.75;
+    }
   </style>
 </head>
+
 <body>
-  <div class="card">
+  <div class="clock">
     <div class="time" id="time">--:--:--</div>
     <div class="date" id="date">--</div>
   </div>
 
   <script>
-    // Paramètres optionnels via l’URL :
+    // Paramètres via l’URL :
     // ?tz=Europe/Paris&locale=fr-FR&seconds=1
     const params = new URLSearchParams(location.search);
     const tz = params.get("tz") || Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -44,15 +54,17 @@
     const timeEl = document.getElementById("time");
     const dateEl = document.getElementById("date");
 
-    function tick(){
+    function tick() {
       const now = new Date();
-      const timeFmt = new Intl.DateTimeFormat(locale, {
+
+      const timeFormatter = new Intl.DateTimeFormat(locale, {
         timeZone: tz,
         hour: "2-digit",
         minute: "2-digit",
         second: showSeconds ? "2-digit" : undefined
       });
-      const dateFmt = new Intl.DateTimeFormat(locale, {
+
+      const dateFormatter = new Intl.DateTimeFormat(locale, {
         timeZone: tz,
         weekday: "long",
         day: "2-digit",
@@ -60,8 +72,8 @@
         year: "numeric"
       });
 
-      timeEl.textContent = timeFmt.format(now);
-      dateEl.textContent = dateFmt.format(now);
+      timeEl.textContent = timeFormatter.format(now);
+      dateEl.textContent = dateFormatter.format(now);
     }
 
     tick();
